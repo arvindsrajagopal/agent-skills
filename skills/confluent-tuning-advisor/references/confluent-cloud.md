@@ -55,7 +55,7 @@ configuration, available Cloud metrics, and application behavior instead.
 
 Confluent Cloud does not expose the broker JMX MBeans listed in
 [references/monitoring.md](monitoring.md). Use the current
-[Confluent Cloud Metrics API guide](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html)
+[Confluent Cloud Metrics API guide](https://docs.confluent.io/cloud/current/monitoring/metrics-api.md)
 for authentication, descriptor discovery, query behavior, and export integrations. Before naming
 or querying a server-side metric, discover the available resource and metric descriptors; do not
 infer a Cloud metric name from a Platform MBean.
@@ -77,7 +77,7 @@ Cloud metrics, or state plainly what the user must do to obtain them.
 Use the live [Metrics Reference](https://api.telemetry.confluent.cloud/docs/descriptors/) as the
 source of truth for each metric's current name, resource type, labels, data type, aggregation
 semantics, exportability, product or cluster-type applicability, and deprecation status. Use
-[Confluent's Metrics API query examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api-examples.html)
+[Confluent's Metrics API query examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api-examples.md)
 for current request shapes. If a required broker signal has no documented Cloud metric, say it is
 not exposed and use an available Cloud metric, client JMX metric, or application-level SLI instead.
 
@@ -120,11 +120,6 @@ version-supported configuration introspection; do not claim ordinary producer JM
 those values. Client JMX remains useful for outcomes such as `record-error-rate`, retries, request
 latency, and queue time.
 
-For durability, `acks=all` is what makes `min.insync.replicas` participate in acknowledgment.
-`enable.idempotence=true` is strongly recommended to prevent duplicates and preserve ordering on
-retry, but do not describe idempotence itself as the mechanism that prevents acknowledged-write
-loss on broker failure.
-
 ## Cloud operation references
 
 Use these platform-specific references in the recommendation's "How to apply" block:
@@ -135,7 +130,7 @@ Use these platform-specific references in the recommendation's "How to apply" bl
   server is configured — fully qualified tool names (`<server-name>:update-topic-config`, etc.);
   the exact tool name depends on the administrator's MCP setup.
 - **REST / Cloud API**: use the current [Confluent Cloud Kafka REST API and Cloud API
-  documentation](https://docs.confluent.io/cloud/current/api.html) for the supported topic-config
+  documentation](https://docs.confluent.io/cloud/current/api.md) for the supported topic-config
   and cluster-level operations (tier, capacity, and CKU settings).
 
 ## Multi-region availability/durability options
@@ -170,9 +165,9 @@ expectations correctly rather than implying zero-loss failover:
 - [Confluent Cloud cluster types](https://docs.confluent.io/cloud/current/clusters/cluster-types.md)
 - [Confluent Cloud topic configuration](https://docs.confluent.io/cloud/current/topics/manage.md)
 - [Confluent Cloud service quotas](https://docs.confluent.io/cloud/current/quotas/service-quotas.md)
-- [Confluent Cloud Metrics API](https://docs.confluent.io/cloud/current/monitoring/metrics-api.html)
+- [Confluent Cloud Metrics API](https://docs.confluent.io/cloud/current/monitoring/metrics-api.md)
 - [Metrics API metrics reference](https://api.telemetry.confluent.cloud/docs/descriptors/)
-- [Metrics API query examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api-examples.html)
+- [Metrics API query examples](https://docs.confluent.io/cloud/current/monitoring/metrics-api-examples.md)
 - [Cluster Linking](https://docs.confluent.io/cloud/current/multi-cloud/cluster-linking/index.md)
 - [Cluster Linking for failover and disaster recovery](https://docs.confluent.io/cloud/current/multi-cloud/cluster-linking/dr-failover.md)
 - [Optimize and tune Confluent Cloud clients](https://docs.confluent.io/cloud/current/client-apps/optimizing/overview.md)

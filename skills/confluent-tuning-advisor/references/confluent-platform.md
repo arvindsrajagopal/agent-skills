@@ -61,10 +61,10 @@ for hardware sizing, memory and page-cache allocation, supported Java versions, 
 - **Storage:** multiple data disks (`log.dirs`) or RAID 10 (RAID 1/10 preferred, RAID 5 not
   recommended); XFS or ext4; do not share Kafka disks with the OS or app logs; avoid file-based NAS.
 - **Network and OS:** verify bandwidth, inter-broker latency, file descriptors, memory-map limits,
-  and other prerequisites against the current [deployment guidance](https://docs.confluent.io/platform/current/kafka/deployment.html)
-  and [system requirements](https://docs.confluent.io/platform/current/installation/system-requirements.html).
+  and other prerequisites against the current [deployment guidance](https://docs.confluent.io/platform/current/kafka/deployment.md)
+  and [system requirements](https://docs.confluent.io/platform/current/installation/system-requirements.md).
   For dissimilar cross-region links, evaluate
-  [Multi-Region Clusters](https://docs.confluent.io/platform/current/multi-dc-deployments/multi-region.html).
+  [Multi-Region Clusters](https://docs.confluent.io/platform/current/multi-dc-deployments/multi-region.md).
 
 Confirm these are sane before recommending broker config changes — say so plainly when the real
 fix is hardware/OS/JVM rather than a Kafka knob.
@@ -80,11 +80,11 @@ For region/DC loss, flag the architecture choice separately from topic configura
 - Tooling: **Cluster Linking** is the standard — it replicates topics byte-for-byte and preserves
   consumer offsets, with no separate connect cluster to run. It is the default cross-cluster DR
   option on Confluent Platform. Use the Platform
-  [Cluster Linking guide](https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/index.html)
+  [Cluster Linking guide](https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/index.md)
   for replication, failover, and RPO/RTO behavior, and the
-  [multi-datacenter deployment guide](https://docs.confluent.io/platform/current/multi-dc-deployments/overview.html)
+  [multi-datacenter deployment guide](https://docs.confluent.io/platform/current/multi-dc-deployments/overview.md)
   to choose the surrounding architecture.
-- A single stretched cluster with rack/observer placement is another model for near-zero RPO when
+- A single stretched **Multi-Region** cluster with rack/observer placement is another model for near-zero RPO when
   network latency between sites allows it.
 
 ## Platform operation references
@@ -92,9 +92,9 @@ For region/DC loss, flag the architecture choice separately from topic configura
 Use these platform-specific operations in the recommendation's "How to apply" block:
 
 - **REST / Admin API**: use
-  [Change Kafka Configurations Without Restart](https://docs.confluent.io/platform/current/kafka/dynamic-config.html)
+  [Change Kafka Configurations Without Restart](https://docs.confluent.io/platform/current/kafka/dynamic-config.md)
   to determine which broker and cluster settings are dynamic, and the
-  [REST Proxy v3 API reference](https://docs.confluent.io/platform/current/kafka-rest/api.html#rest-proxy-v3)
+  [REST Proxy v3 API reference](https://docs.confluent.io/platform/current/kafka-rest/api.md#rest-proxy-v3)
   for the supported configuration operations and current request formats.
 - **CLI**: use the current [Confluent CLI documentation](https://docs.confluent.io/confluent-cli/current/overview.md)
   for topic-config operations supported by the installed version.
@@ -112,7 +112,7 @@ Use these platform-specific operations in the recommendation's "How to apply" bl
 - [System requirements](https://docs.confluent.io/platform/current/installation/system-requirements.md)
 - [Running Kafka in production (hardware, memory, CPU, storage)](https://docs.confluent.io/platform/current/kafka/deployment.md)
 - [Best practices for production deployments](https://docs.confluent.io/platform/current/kafka/post-deployment.md)
-- [Change Kafka configurations without restart](https://docs.confluent.io/platform/current/kafka/dynamic-config.html)
-- [Cluster Linking for Confluent Platform](https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/index.html)
-- [Deploy Confluent Platform in a multi-datacenter environment](https://docs.confluent.io/platform/current/multi-dc-deployments/overview.html)
+- [Change Kafka configurations without restart](https://docs.confluent.io/platform/current/kafka/dynamic-config.md)
+- [Cluster Linking for Confluent Platform](https://docs.confluent.io/platform/current/multi-dc-deployments/cluster-linking/index.md)
+- [Deploy Confluent Platform in a multi-datacenter environment](https://docs.confluent.io/platform/current/multi-dc-deployments/overview.md)
 - [Monitoring metrics — see references/monitoring.md](monitoring.md)

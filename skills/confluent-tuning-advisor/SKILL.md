@@ -4,8 +4,8 @@ description: "Advisory-only Kafka tuning for Confluent Cloud or Confluent Platfo
 compatibility: Advisory / read-only, no bundled scripts. Inspection uses the Confluent CLI (`confluent`) logged in, a configured Confluent MCP server, or the Kafka Admin REST API. Needs read access to Confluent Cloud or Confluent Platform; local Docker with `confluent-local` or `cp-all-in-one` is supported for development testing.
 metadata:
   author: confluent
-  version: "1.0.0"
-  last_updated: "2026-09-04"
+  version: "1.0.1"
+  last_updated: "2026-09-06"
 ---
 
 # Confluent Tuning Advisor
@@ -115,8 +115,8 @@ already has:
 - **MCP tools**: discover a read-only topic-description or topic-config listing tool from the
   configured Confluent MCP server — preferred for discovery when available.
 - **REST**: use the read-only topic-config listing operation in the current
-  [Confluent Cloud Kafka REST v3 API reference](https://docs.confluent.io/cloud/current/ccloud/cluster-v-3/)
-  or [Confluent Platform REST Proxy v3 API reference](https://docs.confluent.io/platform/current/kafka-rest/api.html#rest-proxy-v3),
+  [Confluent Cloud Kafka REST v3 API reference](https://docs.confluent.io/cloud/current/api.md#tag/Cluster-(v3))
+  or [Confluent Platform REST Proxy v3 API reference](https://docs.confluent.io/platform/current/kafka-rest/api.md#rest-proxy-v3),
   as appropriate. A Kafka bootstrap address is not an HTTP endpoint; use the cluster's advertised
   REST endpoint.
 

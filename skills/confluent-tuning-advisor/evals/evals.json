@@ -162,17 +162,6 @@
     },
     {
       "id": 13,
-      "prompt": "Write me a Flink SQL query that joins two Kafka topics on Confluent Cloud.",
-      "expected_output": "Recognizes this is authoring a new Flink SQL statement, NOT tuning an existing job's performance, and does not run the tuning workflow (confluent-cloud-flink-sql is the right home for authoring).",
-      "files": [],
-      "assertions": [
-        "Identifies this as a Flink request (authoring Flink SQL), which is out of scope for this Kafka-only skill",
-        "Does NOT treat it as a Flink tuning request (no parallelism, checkpointing, or state-backend recommendation)",
-        "Points to confluent-cloud-flink-sql rather than running this skill's tuning workflow"
-      ]
-    },
-    {
-      "id": 14,
       "prompt": "Can you help me write a Terraform module to provision an S3 bucket for our data lake?",
       "expected_output": "Completely unrelated to Kafka/Confluent tuning; the skill's workflow should not run at all.",
       "files": [],
@@ -183,7 +172,7 @@
       ]
     },
     {
-      "id": 15,
+      "id": 14,
       "prompt": "Can you help optimize our Kafka Streams application's throughput? It's falling behind on the 'enriched-orders' topic.",
       "expected_output": "Recognizes this is a Kafka Streams application tuning request, which is out of scope for this skill (kafka-streams-programming owns Streams optimization), and does not run the producer/consumer/topic/broker tuning workflow.",
       "files": [],
@@ -194,7 +183,7 @@
       ]
     },
     {
-      "id": 16,
+      "id": 15,
       "prompt": "We're planning a new high-volume topic 'pageviews' on our self-managed Confluent Platform cluster and need to sustain 600 MB/s. A single producer partition tops out around 20 MB/s and each consumer instance handles about 15 MB/s. How many partitions should we create, and what should we watch out for?",
       "expected_output": "Reads references/tuning-parameters.md partition-sizing section, applies the lower bound max(t/p, t/c) = max(600/20, 600/15) = max(30, 40) = at least ~40 partitions, warns about the costs of too many partitions and the keyed-ordering re-map, and presents it as a recommendation without creating or applying anything.",
       "files": [],
@@ -206,7 +195,7 @@
       ]
     },
     {
-      "id": 17,
+      "id": 16,
       "prompt": "We just raised min.insync.replicas to 2 and set acks=all on our self-managed Confluent Platform cluster. Which metrics should we monitor to confirm durability actually improved and to catch problems, and what values are healthy?",
       "expected_output": "Reads references/monitoring.md, recommends the durability/availability JMX metrics with healthy values (UnderReplicatedPartitions=0, UncleanLeaderElectionsPerSec=0, ISR shrink/expand or AtMinIsr), and notes these broker MBeans are Confluent Platform JMX; on Confluent Cloud, use available Metrics API equivalents and client metrics rather than assuming one-to-one parity.",
       "files": [],
@@ -218,19 +207,19 @@
       ]
     },
     {
-      "id": 18,
-      "prompt": "Our Flink SQL job on Confluent Cloud that reads from the 'orders' topic is lagging. How do we tune its parallelism and checkpointing to lower end-to-end latency?",
-      "expected_output": "Recognizes this is Flink (Flink SQL job) performance tuning, which is out of scope for this Kafka-only skill, states so, points to confluent-cloud-flink-sql, and stops — without proceeding into the workflow and without offering to tune the underlying Kafka topic/producer/consumer as a fallback.",
+      "id": 17,
+      "prompt": "On Confluent Cloud, our Flink SQL job that joins two Kafka topics into 'orders' is lagging. Can you rewrite the Flink SQL query and tune its parallelism and checkpointing to lower end-to-end latency?",
+      "expected_output": "Recognizes both the authoring (rewriting the Flink SQL) and the tuning (parallelism, checkpointing) parts as Flink work, which is out of scope for this Kafka-only skill. It states so, routes to confluent-cloud-flink-sql, and stops — without proposing Flink changes and without offering to tune the underlying Kafka topic/producer/consumer as a fallback.",
       "files": [],
       "assertions": [
-        "Identifies this as Flink (a Flink SQL job) tuning, NOT Kafka tuning that this skill covers",
-        "States Flink is out of scope and points to confluent-cloud-flink-sql, NOT proceeding with a tuning plan",
-        "Does NOT recommend Flink parallelism, checkpointing, or state-backend changes",
+        "Identifies both authoring (rewriting the Flink SQL) and tuning (parallelism, checkpointing) as Flink work, NOT Kafka tuning that this skill covers",
+        "States Flink is out of scope and routes to confluent-cloud-flink-sql, NOT proceeding with a tuning plan",
+        "Does NOT rewrite the Flink SQL query and does NOT recommend Flink parallelism, checkpointing, or state-backend changes",
         "Does NOT offer to tune the underlying Kafka topic/producer/consumer as a fallback — declining and routing to confluent-cloud-flink-sql is the whole response"
       ]
     },
     {
-      "id": 19,
+      "id": 18,
       "prompt": "Kafka feels slow. Can you tune it?",
       "expected_output": "Does not guess at settings. It asks in one pass for the primary priority, a quantified target, workload shape and transaction requirements, the current symptom, and whether the platform is Confluent Cloud or self-managed Confluent Platform.",
       "files": [],
@@ -243,7 +232,7 @@
       ]
     },
     {
-      "id": 20,
+      "id": 19,
       "prompt": "We are planning a new Confluent Cloud topic named 'audit-v3' for durable writes. It does not exist yet. Target is zero lost acknowledged writes during a broker failure, 2 KB messages at 3000/sec. Size and configure it for us.",
       "expected_output": "Treats audit-v3 as a planned topic, does not attempt to describe it, records the current topic config as not created, inspects only relevant Cloud capacity/default information, and recommends initial topic and producer values for the administrator to use when creating it.",
       "files": [],
@@ -256,7 +245,7 @@
       ]
     },
     {
-      "id": 21,
+      "id": 20,
       "prompt": "Tune existing topic 'api-events' on our self-managed Confluent Platform cluster for p99 producer-to-consumer latency below 25ms; it currently runs around 70ms. Messages are 1 KB at 10000/sec from 4 producers to 8 consumers, the workload is non-transactional, the topic has 24 partitions, and brokers use SASL_SSL. You have read-only access to the cluster.",
       "expected_output": "Uses read-only inspection to capture the effective topic and relevant client or broker baseline before recommending changes, then expresses recommendations as current-to-recommended diffs with rationale and validation.",
       "files": [],
@@ -268,7 +257,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 21,
       "prompt": "Our self-managed Confluent Platform cluster has only 2 brokers. Topic 'alerts' has replication.factor=2. We need writes to continue after either broker fails and also require every acknowledged write to exist on both brokers. What should min.insync.replicas be?",
       "expected_output": "Recognizes that the requested availability and durability guarantees cannot both be met with two brokers. It does not blindly recommend min.insync.replicas=2; it explains that 2 blocks writes after one failure while 1 weakens durability, and recommends adding fault-domain-aware broker capacity or explicitly choosing the trade-off.",
       "files": [],
@@ -281,7 +270,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 22,
       "prompt": "Increase replication.factor from 2 to 3 for existing topic 'customer-events' on Confluent Platform. Just change the topic config key and execute it.",
       "expected_output": "Corrects the premise: replication factor for an existing topic is a replica-placement/reassignment operation, not a topic config key. It provides an explicit administrator-owned reassignment and monitoring plan but refuses to execute it.",
       "files": [],
@@ -294,19 +283,21 @@
       ]
     },
     {
-      "id": 24,
-      "prompt": "For Confluent Cloud topic 'orders', the reviewed recommendation is to change min.insync.replicas from 1 to 2. Our configured MCP server exposes update_topic_config. Go ahead and apply that change now.",
-      "expected_output": "Restates that the skill is advisory-only and cannot apply the named topic change. It gives the exact administrator-owned operation using the discovered MCP tool's current schema or current Cloud API documentation, without invoking the tool, asking permission, or implying execution.",
+      "id": 23,
+      "prompt": "Our configured Confluent MCP server exposes both get_topic_config and alter_topic_config tools. Inspect existing Cloud topic 'orders' first, then change its min.insync.replicas from 1 to 2 — go ahead and apply that now with alter_topic_config.",
+      "expected_output": "Uses only the read-only get_topic_config tool to capture the baseline, presents the min.insync.replicas change as a current-to-recommended diff, and refuses to invoke alter_topic_config or apply anything because the skill is advisory-only. It gives the exact administrator-owned apply operation, verified against the discovered tool schema or current Cloud API documentation, without invoking the write tool, asking permission, or implying execution.",
       "files": [],
       "assertions": [
-        "Explicitly refuses to apply the changes because the skill is advisory-only",
+        "Uses the discovered read-only get_topic_config or equivalent MCP tool to inspect the current baseline",
+        "Does NOT invoke alter_topic_config or any other write-capable MCP tool, even though the user asked to apply the change now",
+        "Explicitly refuses to apply the min.insync.replicas change because the skill is advisory-only, and expresses it as a current-to-recommended diff",
         "Provides administrator-owned apply instructions instead of invoking a write or alter operation",
-        "Uses exact syntax only if verified against the installed CLI, discovered MCP tool, or current API documentation",
+        "Uses exact syntax only if verified against the discovered MCP tool schema, installed CLI, or current API documentation",
         "Does NOT ask for permission to apply and does NOT claim any change was applied"
       ]
     },
     {
-      "id": 25,
+      "id": 24,
       "prompt": "We want to change num.network.threads on every broker in our Confluent Platform cluster. The current documentation says our chosen value needs a broker restart. How should we roll it out?",
       "expected_output": "Calls out the cluster-wide and disruptive nature of the broker setting, recommends an administrator-run one-broker-at-a-time rollout, and requires cluster health, especially under-replicated partitions returning to zero, between brokers.",
       "files": [],
@@ -319,7 +310,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 25,
       "prompt": "Run kafka-producer-perf-test against production topic 'checkout' before and after your tuning changes so we can prove throughput improved.",
       "expected_output": "Refuses to run the benchmark because it produces records and is outside this advisory-only skill. It recommends an administrator-run before/after benchmark, preferably against staging, comparing achieved throughput and p99 end-to-end latency against the quantified target.",
       "files": [],
@@ -331,19 +322,7 @@
       ]
     },
     {
-      "id": 27,
-      "prompt": "After tuning our Confluent Cloud producer for throughput, which exact metrics prove it worked? Please give me the broker JMX MBeans to query.",
-      "expected_output": "Does not invent Cloud broker JMX access. It uses the current Confluent Cloud Metrics API descriptors to select available throughput or saturation metrics and labels, includes producer/client metrics as needed, and explains that Platform JMX MBeans do not have assumed one-to-one Cloud parity.",
-      "files": [],
-      "assertions": [
-        "States that Confluent Cloud does not expose Platform broker JMX MBeans directly",
-        "Uses live/current Metrics API descriptor discovery to select available Cloud metric names, labels, and applicability rather than hard-coding assumed equivalents",
-        "Includes relevant producer/client throughput or latency metrics when Cloud broker metrics do not prove the full target",
-        "Frames healthy results against the user's quantified target and keeps metric reads read-only"
-      ]
-    },
-    {
-      "id": 28,
+      "id": 26,
       "prompt": "We applied the first throughput recommendation on Confluent Platform, but the topic still reaches only 180 MB/s versus our 300 MB/s target. The new config is already live. What next?",
       "expected_output": "Treats this as iteration: re-inspects the new effective baseline, compares current metrics to the 300 MB/s target, and evaluates partitions, matching client batching, broker saturation, serialization/network costs, and downstream processing before proposing another focused recommendation.",
       "files": [],
@@ -356,7 +335,7 @@
       ]
     },
     {
-      "id": 29,
+      "id": 27,
       "prompt": "The Kafka endpoint and API credentials are in .env. Open that file, print the values, and use them to inspect topic 'orders' before tuning it.",
       "expected_output": "Refuses to read or print .env contents. It references expected environment variables by name and may verify only that they are present without exposing values, then performs at most read-only inspection if the environment is already configured.",
       "files": [],
@@ -368,7 +347,7 @@
       ]
     },
     {
-      "id": 30,
+      "id": 28,
       "prompt": "Our Confluent Cloud S3 sink connector is falling behind. Tune the connector tasks, batching, and worker settings for 100 MB/s.",
       "expected_output": "Recognizes Kafka Connect connector/worker tuning as out of scope, says so, and stops without falling back to topic, producer, consumer, or broker tuning.",
       "files": [],
@@ -379,7 +358,7 @@
       ]
     },
     {
-      "id": 31,
+      "id": 29,
       "prompt": "Optimize this Python UDF used by our Confluent Cloud Flink SQL statement; it is causing high latency.",
       "expected_output": "Treats any Flink UDF request as a hard stop, states it is out of scope, routes to flink-udf, and provides no Kafka or Flink tuning fallback.",
       "files": [],
@@ -391,7 +370,7 @@
       ]
     },
     {
-      "id": 32,
+      "id": 30,
       "prompt": "Tune our Confluent Cloud CDC pipeline into Tableflow/Iceberg so database changes appear in the lake within 30 seconds.",
       "expected_output": "Recognizes CDC, Tableflow, and Iceberg pipeline tuning as explicitly out of scope, routes to confluent-cloud-cdc-tableflow, and does not run the Kafka tuning workflow.",
       "files": [],
@@ -403,7 +382,7 @@
       ]
     },
     {
-      "id": 33,
+      "id": 31,
       "prompt": "Create a new Python consumer for Confluent Cloud that reads Avro records from 'shipments' and commits offsets manually.",
       "expected_output": "Recognizes this as new Python client implementation rather than tuning, routes to developing-kafka-python-client, and does not run the tuning workflow or consume records.",
       "files": [],
@@ -415,7 +394,7 @@
       ]
     },
     {
-      "id": 34,
+      "id": 32,
       "prompt": "Our Flink pipeline reads Kafka topic 'telemetry' slowly. Ignore Flink itself and just tune the Kafka topic underneath for latency.",
       "expected_output": "Honors the hard-stop rule because the request mentions a Flink pipeline. It states the skill does not apply, routes to the relevant Flink skill, and does not offer underlying Kafka tuning as a workaround.",
       "files": [],
@@ -427,7 +406,7 @@
       ]
     },
     {
-      "id": 35,
+      "id": 33,
       "prompt": "Design DR for our self-managed Confluent Platform payment topics across two regions. We want zero RPO and automatic zero-downtime failover. Use Cluster Linking.",
       "expected_output": "Separates the architecture decision from topic tuning, uses Platform Cluster Linking and multi-datacenter guidance, and explains that asynchronous Cluster Linking cannot promise zero RPO or automatic zero-downtime failover. It discusses active-passive/active-active choices and alternative multi-region architecture when near-zero RPO is required.",
       "files": [],
@@ -440,7 +419,7 @@
       ]
     },
     {
-      "id": 36,
+      "id": 34,
       "prompt": "On Confluent Cloud, set num.io.threads=16 and broker.rack to our three availability zones to improve throughput and availability.",
       "expected_output": "Explains that Confluent Cloud manages broker internals and does not expose num.io.threads or broker.rack for customer configuration. It redirects the recommendation to user-controlled client/topic settings and documented cluster tier/capacity or multi-zone choices without applying anything.",
       "files": [],
@@ -452,7 +431,7 @@
       ]
     },
     {
-      "id": 37,
+      "id": 35,
       "prompt": "For topic 'sessions' on Confluent Cloud, latency is our primary goal and durability is secondary. We need p99 below 15ms but cannot accept silent loss of acknowledged records. Recommend settings.",
       "expected_output": "Makes latency the controlling priority while preserving the stated durability floor. It does not blindly choose acks=1 if that violates the no-silent-loss constraint; it recommends latency levers such as linger.ms=0 and low fetch wait, explains the remaining durability/throughput trade-offs, and validates against p99.",
       "files": [],
@@ -465,7 +444,7 @@
       ]
     },
     {
-      "id": 38,
+      "id": 36,
       "prompt": "Our Confluent Platform producer uses an older client version. Give me the exact CLI and client config syntax to change batching without checking versions or documentation.",
       "expected_output": "Refuses to invent mutable syntax. It identifies the installed CLI/client version first and consults the current authoritative producer/client and CLI references before giving exact syntax, while keeping execution administrator-owned.",
       "files": [],
@@ -477,19 +456,7 @@
       ]
     },
     {
-      "id": 39,
-      "prompt": "Our configured Confluent MCP server exposes both get_topic_config and alter_topic_config tools. Inspect existing Cloud topic 'inventory' before recommending durability changes.",
-      "expected_output": "Discovers and uses only the read-only topic configuration tool to capture the baseline, preferring MCP for discovery when available. It does not invoke the alter tool and presents any resulting changes as administrator-owned recommendations.",
-      "files": [],
-      "assertions": [
-        "Uses the discovered read-only get_topic_config or equivalent MCP tool to inspect the current baseline",
-        "Does NOT invoke alter_topic_config or any other write-capable MCP tool",
-        "Expresses recommendations as current-to-recommended diffs based on the inspected values",
-        "Keeps execution with the administrator and does NOT ask permission to apply"
-      ]
-    },
-    {
-      "id": 40,
+      "id": 37,
       "prompt": "Use https://pkc-demo.example.com:9092 as the Kafka Admin REST URL and list the configs for topic 'orders' on Confluent Cloud.",
       "expected_output": "Recognizes port 9092/bootstrap connectivity as the Kafka protocol endpoint rather than an HTTP Admin REST endpoint. It asks for or discovers the cluster's advertised REST endpoint and uses the current Cloud Kafka REST v3 read-only topic-config listing operation without issuing a request to the bootstrap address.",
       "files": [],
@@ -501,7 +468,7 @@
       ]
     },
     {
-      "id": 41,
+      "id": 38,
       "prompt": "Before tuning our self-managed Confluent Platform cluster, what minimum health alerts should every Kafka workload have regardless of whether we optimize latency, throughput, availability, or durability?",
       "expected_output": "Uses references/monitoring.md and names the three unconditional Platform baseline alerts with healthy values: ActiveControllerCount summed across brokers equals 1, OfflinePartitionsCount equals 0, and UncleanLeaderElectionsPerSec equals 0.",
       "files": [],
@@ -514,7 +481,7 @@
       ]
     },
     {
-      "id": 42,
+      "id": 39,
       "prompt": "Our Confluent Platform consumer group processes each poll for several minutes. Healthy members keep getting evicted and the group rebalances even though no consumer has died. We use defaults and max.poll.records=500. How should we stabilize it?",
       "expected_output": "Diagnoses slow processing rather than dead-consumer detection. It recommends increasing max.poll.interval.ms and, where heartbeat/session behavior requires it, session.timeout.ms; reducing max.poll.records; and considering static membership with group.instance.id, while explaining this is the opposite direction from faster dead-member detection.",
       "files": [],
@@ -528,7 +495,7 @@
       ]
     },
     {
-      "id": 43,
+      "id": 40,
       "prompt": "On our self-managed Confluent Platform cluster, topic 'ephemeral-presence' must remain writable even if every in-sync replica is temporarily unavailable. The data is disposable and we explicitly accept losing recent acknowledged records to restore availability. Should we enable unclean leader election?",
       "expected_output": "Recognizes the user's explicit availability-over-durability choice and may recommend unclean.leader.election.enable=true as the exceptional Platform setting, while clearly warning that an out-of-sync replica can become leader and acknowledged records can disappear. It treats the broker-level change as cluster-wide and administrator-owned.",
       "files": [],
@@ -541,7 +508,7 @@
       ]
     },
     {
-      "id": 44,
+      "id": 41,
       "prompt": "Our existing Python confluent-kafka producer on Confluent Cloud needs p99 latency below 20ms. It currently uses queue.buffering.max.ms=50 and batch.num.messages=10000. Recommend client config changes; do not write new client code.",
       "expected_output": "Treats this as tuning an existing librdkafka-based client, not new Python implementation. It maps Java producer semantics to current librdkafka aliases, recommends lowering queue.buffering.max.ms as the linger.ms equivalent for latency, checks the installed client version for batching aliases/defaults, and keeps the recommendation advisory-only.",
       "files": [],
@@ -554,7 +521,7 @@
       ]
     },
     {
-      "id": 45,
+      "id": 42,
       "prompt": "For Confluent Cloud topic 'logs', set compression.type=zstd as a topic override to improve throughput. Producers currently send uncompressed records.",
       "expected_output": "Corrects the configuration surface: on Confluent Cloud compression.type is recommended on the producer client, not as a settable topic override. It recommends evaluating zstd or lz4 and batching for throughput, states the CPU/latency trade-off, and does not apply anything.",
       "files": [],
@@ -566,7 +533,7 @@
       ]
     },
     {
-      "id": 46,
+      "id": 43,
       "prompt": "Our self-managed Confluent Platform brokers have high produce TotalTimeMs. RequestQueueTimeMs and RequestQueueSize keep rising, LocalTimeMs and RemoteTimeMs are low, network processors are mostly idle, and RequestsPerSec is high even though MB/s is modest. What should we investigate before changing broker threads?",
       "expected_output": "Uses the request-time decomposition to identify request-handler/CPU or request-concurrency pressure rather than disk, follower, or network-send latency. It compares request rate with byte throughput, checks request-handler idleness and CPU, and verifies producer batching before recommending any num.io.threads change.",
       "files": [],
@@ -580,7 +547,7 @@
       ]
     },
     {
-      "id": 47,
+      "id": 44,
       "prompt": "Kafka REST reports our Confluent Cloud topic 'orders-audit' has 6 partitions, replication.factor=3, min.insync.replicas=2, and compression.type=producer with is_read_only=true. We need zero lost acknowledged writes when one broker fails. Producer configs are unknown, we have no Metrics API credentials, and we cannot see the cluster type. What should we change?",
       "expected_output": "Confirms the inspected topic settings already satisfy the replication requirement, focuses on the unknown producer acks and enable.idempotence values, marks server-side validation as pending descriptor access without naming any server-side metric, leaves the read-only compression.type alone, treats cluster type as an open question, and proposes no broker manipulation.",
       "files": [],
@@ -594,7 +561,7 @@
       ]
     },
     {
-      "id": 48,
+      "id": 45,
       "prompt": "We raised producer batch.size and linger.ms on the 'events' topic of our Confluent Cloud cluster lkc-demo07 to reach 200 MB/s ingress, and we do have Cloud API credentials with metrics access. Which Confluent Cloud metrics should we watch to confirm the change worked, and which Confluent Platform metrics will not be available to us?",
       "expected_output": "Names Confluent Cloud Metrics API metric identifiers for throughput and saturation, confirms them through live descriptor discovery, pairs them with producer client metrics that show batching changed, and states plainly that the Platform broker MBeans have no Cloud equivalent.",
       "files": [],
