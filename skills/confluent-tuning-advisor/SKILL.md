@@ -278,7 +278,7 @@ time) — say so rather than continuing to recommend Kafka knobs that won't help
 - **Never read `.env` file contents** with `cat`, `Read`, `head`, `grep`, or any other tool.
   Reference variables by name only (e.g. `$BOOTSTRAP_SERVERS`) and verify presence with
   `test -n "$VAR"`, never by printing the value.
-- Add `.env` to `.gitignore` (already done in this skill's own `.gitignore`).
+- Add `.env` to `.gitignore` to avoid accidentally committing credentials.
 - Eval prompts, fixtures, and any example data in this skill use synthetic values only —
   `example.com`/`.example` names, fabricated cluster/topic ids. Never substitute real customer
   identifiers, hostnames, or credentials when adapting this skill's examples.
