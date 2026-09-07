@@ -147,8 +147,6 @@ and commit error rate to separate processing slowness from group instability.
 
 ## Reference docs
 
-<!-- reviewer: confirm sibling files confluent-cloud.md / confluent-platform.md exist in this skill dir -->
-
 - [Kafka monitoring / metrics reference (Confluent Platform)](https://docs.confluent.io/platform/current/kafka/monitoring.md)
 - [Self-Balancing Clusters](https://docs.confluent.io/platform/current/clusters/sbc/index.md)
 - [Broker metrics](https://docs.confluent.io/platform/current/kafka/broker-metrics.md)
