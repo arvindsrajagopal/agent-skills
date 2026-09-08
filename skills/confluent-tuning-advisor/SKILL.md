@@ -1,7 +1,7 @@
 ---
 name: confluent-tuning-advisor
 description: "Advisory-only Kafka tuning for Confluent Cloud or Confluent Platform by priority: latency, throughput, availability, or durability. Use when asked to size a planned topic or tune an existing cluster, topic, producer, or consumer for a quantified target such as lower p99 latency or no lost acknowledged writes. Inspects configuration read-only and recommends changes, trade-offs, and validation; the administrator applies them. Do NOT trigger for: WarpStream or Apache Kafka OSS-only clusters; Flink SQL or UDF authoring, tuning, or debugging (use confluent-cloud-flink-sql or flink-udf); Kafka Connect tuning; new Java/Python client implementation (use developing-kafka-java-client or developing-kafka-python-client); Kafka Streams/KStream/KTable development (use kafka-streams-programming); or CDC, Tableflow, or Iceberg pipelines (use confluent-cloud-cdc-tableflow)."
-compatibility: Advisory / read-only, no bundled scripts. Inspection uses the Confluent CLI (`confluent`) logged in, a configured Confluent MCP server, or the Kafka Admin REST API. Needs read access to Confluent Cloud or Confluent Platform; local Docker with `confluent-local` or `cp-all-in-one` is supported for development testing.
+compatibility: Advisory / read-only, no bundled scripts. Inspection uses the Confluent CLI (`confluent`) logged in, a configured Confluent MCP server, or the Kafka REST v3 / REST Proxy v3 API (config reads) and Cloud Metrics API / Platform JMX (metric reads). Needs read access to Confluent Cloud or Confluent Platform; local Docker with `confluent-local` or `cp-all-in-one` is supported for development testing.
 metadata:
   author: confluent
   version: "1.0.1"
@@ -27,7 +27,7 @@ free lunch exists.
 > execution strictly separate: present the proposed change, do **not** ask for permission to apply
 > it, do **not** apply it, and never state or imply that a change has been made. This skill ships no
 > executable scripts; the only actions it takes are **read-only** config/metric inspection via the
-> Confluent CLI, an MCP server, or the Kafka Admin REST API.
+> Confluent CLI, an MCP server, or the Kafka REST v3 / REST Proxy v3 and Cloud Metrics APIs.
 
 ## When to read which file
 
@@ -286,7 +286,8 @@ time) — say so rather than continuing to recommend Kafka knobs that won't help
   operations, or mutate a broker, topic, or client — not even a "safe" or "dry-run then confirm"
   apply, and not even if the user says to proceed. It ships **no executable scripts**; its only
   actions are **read-only** config/metric inspection via the Confluent CLI, an MCP server, or the
-  Kafka Admin REST API (`describeConfigs` and metric reads). Any benchmarking produces/consumes
+  Kafka REST v3 / REST Proxy v3 API (topic-config reads) and the Cloud Metrics API / Platform JMX
+  (metric reads). Any benchmarking produces/consumes
   records and is therefore the **administrator's** to run, never this skill. Recommend; never
   execute. Never request permission to apply, and never claim or imply a change was applied — if
   asked to make the change, restate that applying it is the administrator's responsibility and
