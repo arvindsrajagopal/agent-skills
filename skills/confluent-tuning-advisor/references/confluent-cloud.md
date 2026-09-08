@@ -64,8 +64,10 @@ In particular, names such as `UnderReplicatedPartitions` and
 them for Cloud only if live descriptor discovery explicitly returns those exact names. If Metrics
 API credentials or descriptors are unavailable, say server-side metric validation is pending and
 use documented client or application signals that are actually accessible. In that case, do not
-list candidate server-side metric names at all; write only `Server-side metric validation: pending
-descriptor access` — that exact wording, once — and continue with accessible validation.
+list candidate server-side metric names at all; write only this exact line, once, and continue
+with accessible validation:
+
+    Server-side metric validation: pending descriptor access
 
 **Pending is the exception, not the default posture.** Do not assume descriptors are unavailable.
 Attempt discovery first against the live Metrics Reference or the descriptors endpoint, and name the

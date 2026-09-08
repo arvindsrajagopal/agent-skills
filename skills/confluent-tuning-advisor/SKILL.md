@@ -188,8 +188,8 @@ How to apply (for the administrator to run — this skill does not run these):
 Validation (Step 7) — how the administrator confirms it worked after applying:
   Server-side metric: <a metric name confirmed available on this platform — a Platform JMX MBean,
     or a Cloud metric returned by live descriptor discovery. When the target is Cloud and
-    descriptors are unavailable, emit exactly "Server-side metric validation: pending descriptor
-    access" and name no server-side metric here.>
+    descriptors are unavailable, name no server-side metric here and emit exactly this line:
+    Server-side metric validation: pending descriptor access>
   Client/application signal: <an accessible client metric or application-level SLI>
   Benchmark (optional, administrator-run): <the before/after measurement from Step 7>
 ```
